@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { UserRepository } from './user.repository';
-import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
-import { UserEntity } from './user.entity';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UserRepository } from '../../../domain/user/user.repository';
+import { UserEntity } from '../../../domain/user/user.entity';
 
 @Injectable()
 export class UserService {
@@ -13,10 +12,9 @@ export class UserService {
         message: 'user not found',
       });
     }
-
     const userEntity = new UserEntity(userExist);
-
     userEntity.suspend();
     const updatedUser = await this.userRepository.update();
+    return updatedUser;
   }
 }
