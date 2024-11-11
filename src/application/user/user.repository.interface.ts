@@ -1,6 +1,8 @@
+import { User } from '@prisma/client';
+
 export interface UserRepositoryInterface {
-  findById(id: string): string;
-  findAll(page: number, size: number): string;
-  create(): string;
-  update(): string;
+  findById(id: string): Promise<User>;
+  findAll(page: number, size: number): Promise<User[]>;
+  create(): Promise<User>;
+  update(): Promise<User>;
 }

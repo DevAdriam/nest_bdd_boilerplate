@@ -1,18 +1,18 @@
+import { User } from '@prisma/client';
 import { UserRepositoryInterface } from './user.repository.interface';
 
 export class UserRepository implements UserRepositoryInterface {
-  create(): string {
+  constructor() {}
+  findById(id: string): Promise<User> {
     throw new Error('Method not implemented.');
   }
-  update(): string {
+  findAll(page: number, size: number): Promise<User[]> {
     throw new Error('Method not implemented.');
   }
-
-  findAll(page: number, size: number): string {
-    return '';
+  create(): Promise<User> {
+    throw new Error('Method not implemented.');
   }
-
-  findById(id: string): string {
-    return '';
+  update(): Promise<User> {
+    throw new Error('Method not implemented.');
   }
 }
