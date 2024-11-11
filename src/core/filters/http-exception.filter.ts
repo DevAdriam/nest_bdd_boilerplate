@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { GlobalException } from 'src/common/types/type';
+import { extractFeatureFromPath } from 'src/common/utils/extractFeatureFromPath';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
