@@ -1,12 +1,27 @@
-import { Controller, Patch } from '@nestjs/common';
-import { UserDto } from 'src/application/user/dto/user.dto';
+import { Body, Controller, HttpCode, Param, Patch, Post } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
+import { RegisterDto } from 'src/application/auth/dto/register.dto';
+import { UserService } from 'src/application/user/user.service';
+import { Responser } from 'src/common/types/type';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 
 @Controller('user')
 export class UserController {
-  @Patch()
-  suspendUser(dto: UserDto) {
+  constructor(private readonly userService: UserService) {}
+  @Patch('/suspend/:id')
+  @HttpCode(201)
+  async suspendUser(@Param('id') userId: string): Promise<Responser> {
     try {
+      const suspendedUser = await this.userService.suspendUser(userId);
+      return {
+        _metaData: {
+          message: 'Successfully suspended User',
+          statusCode: 201,
+        },
+        _data: {
+          data: suspendedUser,
+        },
+      };
     } catch (error) {
       throw new BadRequestException({
         message: error.message || 'Something went wrong',

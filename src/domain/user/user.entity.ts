@@ -2,7 +2,6 @@ import type { User, USER_STATUS } from '@prisma/client';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 
 export class UserEntity {
-  private id: string;
   private phone: string;
   private email: string;
   private name: string;
@@ -11,13 +10,8 @@ export class UserEntity {
   constructor(user: User) {
     this.email = user.email;
     this.phone = user.phone;
-    this.id = user.id;
     this.name = user.name;
     this.status = user.status;
-  }
-
-  getId(): string {
-    return this.id;
   }
 
   getEmail(): string {
