@@ -18,6 +18,12 @@ export class AuthService {
       });
     }
 
+    if (dto.email && dto.phone) {
+      throw new BadRequestException({
+        message: 'please choose register method with email or phone',
+      });
+    }
+
     const registerUser = await this.userService.registerUser({
       ...dto,
       password: hashPassword,

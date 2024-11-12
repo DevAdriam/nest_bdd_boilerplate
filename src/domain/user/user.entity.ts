@@ -14,7 +14,7 @@ export class UserEntity {
     this.status = user.status;
   }
 
-  getEmail(): string {
+  getEmail(role): string {
     return this.email;
   }
 

@@ -1,7 +1,7 @@
 import { DocumentBuilder } from '@nestjs/swagger';
 
 export const document = new DocumentBuilder()
-  .setTitle('Nest TDD boiler plate')
-  .setDescription('The boilerplate for nestjs Test Driven Development')
+  .setTitle('Nest BDD boiler plate')
+  .setDescription('The boilerplate for nestjs Behaviour-Driven Development')
   .setVersion('1.0')
   .build();

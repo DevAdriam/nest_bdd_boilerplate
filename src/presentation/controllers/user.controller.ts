@@ -1,6 +1,4 @@
-import { Body, Controller, HttpCode, Param, Patch, Post } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
-import { RegisterDto } from 'src/application/auth/dto/register.dto';
+import {  Controller, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from 'src/application/user/user.service';
 import { Responser } from 'src/common/types/type';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
