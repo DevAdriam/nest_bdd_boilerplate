@@ -1,9 +1,9 @@
-import type { Prisma, User, USER_STATUS } from '@prisma/client';
+import type { Prisma, USER_STATUS } from '@prisma/client';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 
 export class UserEntity {
-  private phone: string;
-  private email: string;
+  private phone: string | undefined | null;
+  private email: string | undefined | null;
   private name: string;
   private status: USER_STATUS;
   private password: string;
@@ -14,8 +14,8 @@ export class UserEntity {
     name,
     status,
   }: {
-    email: string;
-    phone: string;
+    email?: string | undefined | null;
+    phone?: string | undefined | null;
     name: string;
     status: USER_STATUS;
   }) {
@@ -25,7 +25,7 @@ export class UserEntity {
     this.status = status;
   }
 
-  getPhone(): string {
+  getPhone(): string | null | undefined {
     return this.phone;
   }
 
@@ -40,7 +40,7 @@ export class UserEntity {
   //business Logic
   isValidEmail(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(this.email);
+    return emailRegex.test(this.email as string);
   }
 
   updatePassword(newPassword: string) {
@@ -52,7 +52,9 @@ export class UserEntity {
     this.password = newPassword;
   }
 
-  hashPassword() {}
+  hashPassword() {
+    this.password = 'hashed';
+  }
 
   suspend(): void {
     this.status = 'SUSPENDED';

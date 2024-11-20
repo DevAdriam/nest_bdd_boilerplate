@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/user/user.repository';
 import { UserEntity } from '../../domain/user/user.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
-import { Prisma, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 
@@ -28,16 +28,17 @@ export class UserService {
   }
 
   async registerUser(dto: RegisterDto) {
-    const duplicatedUser = await this.userRepository.findByEmail(dto.email);
-    if (duplicatedUser) {
-      throw new BadRequestException({
-        message: 'User duplicated',
-      });
+    if (dto.email) {
+      const duplicatedUser = await this.userRepository.findByEmail(dto.email);
+      if (duplicatedUser) {
+        throw new BadRequestException({
+          message: 'User duplicated',
+        });
+      }
     }
-
     const userEntity = new UserEntity({
-      email: dto.email,
       phone: dto.phone,
+      email: dto.email,
       name: dto.name,
       status: 'REGISTERED',
     });
