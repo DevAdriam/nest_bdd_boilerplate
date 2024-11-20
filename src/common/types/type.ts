@@ -13,7 +13,7 @@ export type Responser = {
   success?: boolean;
   _metaData: Metadata;
   _data: {
-    data: any;
+    data: unknown;
   };
 };
 
@@ -24,4 +24,8 @@ export type GlobalException = {
     cause: string;
     code: number; //custom error code
   };
+};
+
+export type JWTPayload = {
+  id: string;
 };

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../../domain/user/user.repository';
-import { UserEntity } from '../../domain/user/user.entity';
-import { RegisterDto } from '../auth/dto/register.dto';
 import { User } from '@prisma/client';
-import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
+import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
+import { UserEntity } from '../../domain/user/user.entity';
+import { UserRepository } from '../../domain/user/user.repository';
+import { RegisterDto } from '../auth/dto/register.dto';
 
 @Injectable()
 export class UserService {
@@ -24,6 +24,11 @@ export class UserService {
       userEntity.getStatus(),
       userExist.id,
     );
+    if (!updatedUser) {
+      throw new BadRequestException({
+        message: 'failed to update user',
+      });
+    }
     return updatedUser;
   }
 

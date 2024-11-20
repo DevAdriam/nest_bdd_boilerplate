@@ -50,7 +50,6 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_' }, // Ignore unused variables starting with "_"
     ],
-    '@typescript-eslint/explicit-function-return-type': 'off', // Optional return types for simplicity
     '@typescript-eslint/no-floating-promises': 'error', // Ensure promises are handled properly
     '@typescript-eslint/no-explicit-any': 'warn', // Discourage use of 'any' type
 
@@ -93,5 +92,16 @@ module.exports = {
     'build/', // Ignore build directory
     '*.config.js', // Ignore config files for build tools
     '.eslintrc.js', // Ignore ESLint config file itself
+  ],
+  overrides: [
+    {
+      files: ['src/domain/**/*.repository.ts'], // Match files in the repository layer
+      rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+      },
+    },
   ],
 };
