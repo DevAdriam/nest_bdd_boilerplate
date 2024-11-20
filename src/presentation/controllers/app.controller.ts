@@ -6,14 +6,11 @@ import {
 } from '@nestjs/common';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 import { Responser } from 'src/common/types/type';
-import { UserArgs } from '@prisma/client/runtime/library';
 
 @Controller()
 export class AppController {
   @Get()
   getHello(): Responser {
-    const hello = 'random';
-    console.log('this is not used variable');
     return {
       _data: {
         data: 'hello',
