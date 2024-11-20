@@ -8,26 +8,26 @@ import { UserRepositoryInterface } from './user.repository.interface';
 export class UserRepository implements UserRepositoryInterface {
   constructor(private readonly databaseService: PrismaService) {}
   async findById(id: string): Promise<User | null> {
-    return await this.dbService.user.findUnique({
+    return await this.databaseService.user.findUnique({
       where: { id, status: 'ACTIVE' },
     });
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return await this.dbService.user.findFirst({
+    return await this.databaseService.user.findFirst({
       where: { email, status: 'ACTIVE' },
     });
   }
 
   async findAll(page: number, size: number): Promise<User[] | []> {
-    return await this.dbService.user.findMany({
+    return await this.databaseService.user.findMany({
       where: { status: { not: 'DELETED' } },
       take: size,
       skip: page,
     });
   }
   async create(dto: Prisma.UserCreateInput): Promise<User | null> {
-    return await this.dbService.user.create({
+    return await this.databaseService.user.create({
       data: {
         name: dto.name,
         email: dto.email,
@@ -37,7 +37,7 @@ export class UserRepository implements UserRepositoryInterface {
     });
   }
   async update(dto: UpdateUserDto, userId: string): Promise<User | null> {
-    return await this.dbService.user.update({
+    return await this.databaseService.user.update({
       where: {
         id: userId,
       },
@@ -53,7 +53,7 @@ export class UserRepository implements UserRepositoryInterface {
     status: USER_STATUS,
     userId: string,
   ): Promise<User | null> {
-    return await this.dbService.user.update({
+    return await this.databaseService.user.update({
       where: {
         id: userId,
       },
