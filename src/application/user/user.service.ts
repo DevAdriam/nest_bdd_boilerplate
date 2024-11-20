@@ -1,8 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/user/user.repository';
 import { UserEntity } from '../../domain/user/user.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
+import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
+import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 
 @Injectable()
 export class UserService {
@@ -14,6 +16,7 @@ export class UserService {
         message: 'user not found',
       });
     }
+
     const userEntity = new UserEntity(userExist);
     userEntity.suspend();
 
@@ -32,7 +35,26 @@ export class UserService {
       });
     }
 
-    const newUser = await this.userRepository.create(dto);
-    return newUser;
+    const userEntity = new UserEntity({
+      email: dto.email,
+      phone: dto.phone,
+      name: dto.name,
+      status: 'REGISTERED',
+    });
+
+    const emailValid = userEntity.isValidEmail();
+    if (!emailValid) {
+      throw new BadRequestException({
+        message: 'email is not valid',
+        code: customErrorCodes.INVALID_JSON,
+      });
+    }
+    userEntity.hashPassword();
+
+    const savedUser = await this.userRepository.create(
+      userEntity.toPersistance(),
+    );
+
+    return savedUser;
   }
 }

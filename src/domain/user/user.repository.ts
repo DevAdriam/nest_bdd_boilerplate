@@ -32,7 +32,7 @@ export class UserRepository implements UserRepositoryInterface {
       .then((res) => res)
       .catch((err) => err);
   }
-  async create(dto: RegisterDto): Promise<User> {
+  async create(dto: Prisma.UserCreateInput): Promise<User> {
     return this.dbService.user
       .create({
         data: {

@@ -1,4 +1,4 @@
-import type { User, USER_STATUS } from '@prisma/client';
+import type { Prisma, User, USER_STATUS } from '@prisma/client';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 
 export class UserEntity {
@@ -6,16 +6,23 @@ export class UserEntity {
   private email: string;
   private name: string;
   private status: USER_STATUS;
+  private password: string;
 
-  constructor(user: User) {
-    this.email = user.email;
-    this.phone = user.phone;
-    this.name = user.name;
-    this.status = user.status;
-  }
-
-  getEmail(role): string {
-    return this.email;
+  constructor({
+    email,
+    phone,
+    name,
+    status,
+  }: {
+    email: string;
+    phone: string;
+    name: string;
+    status: USER_STATUS;
+  }) {
+    this.email = email;
+    this.phone = phone;
+    this.name = name;
+    this.status = status;
   }
 
   getPhone(): string {
@@ -31,7 +38,7 @@ export class UserEntity {
   }
 
   //business Logic
-  isValidEmail() {
+  isValidEmail(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(this.email);
   }
@@ -42,9 +49,22 @@ export class UserEntity {
         message: 'password must be greater than 6',
       });
     }
+    this.password = newPassword;
   }
+
+  hashPassword() {}
 
   suspend(): void {
     this.status = 'SUSPENDED';
+  }
+
+  toPersistance(): Prisma.UserCreateInput {
+    return {
+      name: this.name,
+      email: this.email,
+      password: this.password,
+      status: this.status,
+      phone: this.phone,
+    };
   }
 }
