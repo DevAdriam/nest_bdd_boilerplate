@@ -11,6 +11,9 @@ import { Responser } from 'src/common/types/type';
 export class AppController {
   @Get()
   getHello(): Responser {
+    const d = 'hello ';
+
+    console.log('nth');
     return {
       _data: {
         data: 'hello',
