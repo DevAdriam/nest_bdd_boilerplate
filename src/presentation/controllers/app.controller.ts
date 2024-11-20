@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 import { Responser } from 'src/common/types/type';
+import { User } from '@prisma/client';
 
 @Controller()
 export class AppController {
   @Get()
   getHello(): Responser {
     const d = 'hello ';
-
     console.log('nth');
     return {
       _data: {
