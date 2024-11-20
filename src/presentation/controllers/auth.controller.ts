@@ -25,8 +25,14 @@ export class AuthController {
         },
       };
     } catch (error) {
+      if (error instanceof Error) {
+        throw new BadRequestException({
+          message: error.message,
+        });
+      }
+
       throw new BadRequestException({
-        message: error.message,
+        message: 'failed to register',
       });
     }
   }

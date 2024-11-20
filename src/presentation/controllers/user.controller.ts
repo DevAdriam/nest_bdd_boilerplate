@@ -1,4 +1,4 @@
-import { Controller, HttpCode, Param, Patch, Post } from '@nestjs/common';
+import { Controller, HttpCode, Param, Patch } from '@nestjs/common';
 import { ApiParam } from '@nestjs/swagger';
 import { UserService } from 'src/application/user/user.service';
 import { Responser } from 'src/common/types/type';
@@ -26,8 +26,14 @@ export class UserController {
         },
       };
     } catch (error) {
+      if (error instanceof Error) {
+        throw new BadRequestException({
+          message: error.message,
+        });
+      }
+
       throw new BadRequestException({
-        message: error.message || 'Something went wrong',
+        message: 'Something went wrong',
       });
     }
   }

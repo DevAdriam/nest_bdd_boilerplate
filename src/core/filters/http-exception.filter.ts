@@ -7,30 +7,30 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { GlobalException } from 'src/common/types/type';
-import { extractFeatureFromPath } from 'src/common/utils/extractFeatureFromPath';
+import { extractFeatureFromPath } from 'src/common/utils/extract-feature-from-path';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const req = ctx.getRequest<Request>();
-    const res = ctx.getResponse<Response>();
+    const context = host.switchToHttp();
+    const request = context.getRequest<Request>();
+    const response = context.getResponse<Response>();
 
     const status = exception.getStatus();
-    const errorResponse: any = exception.getResponse();
+    const errorResponse: string | object = exception.getResponse();
 
-    res.status(status).json({
+    response.status(status).json({
       success: false,
       _metaData: {
-        path: req.url,
-        feature: extractFeatureFromPath(req.path), // api/v1/auth -> auth
+        path: request.url,
+        feature: extractFeatureFromPath(request.path), // api/v1/auth -> auth
         version: process.env.API_VERSION,
         timeStamp: new Date().toISOString(),
         statusCode: HttpStatus.BAD_REQUEST,
       },
       _error: {
-        code: errorResponse['code'],
-        cause: errorResponse['message'],
+        code: errorResponse['code'] as number,
+        cause: errorResponse['message'] as string,
       },
     } as GlobalException);
   }

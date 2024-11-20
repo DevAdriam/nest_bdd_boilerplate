@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "target": "ES2022", // or higher (es2017, es2020, esnext)
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",

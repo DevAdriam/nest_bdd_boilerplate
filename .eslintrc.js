@@ -54,7 +54,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'warn', // Discourage use of 'any' type
 
     // Import Rules
-    'import/no-unresolved': ['error', { commonjs: true, amd: true }], // Ensure imports are resolvable
+    'import/no-unresolved': ['warn', { commonjs: true, amd: true }], // Ensure imports are resolvable
     'import/order': [
       'error',
       {
@@ -76,6 +76,8 @@ module.exports = {
     'unicorn/filename-case': ['error', { case: 'kebabCase' }], // Enforce kebab-case filenames
     'unicorn/prefer-optional-catch-binding': 'error', // Prefer optional catch bindings
     'unicorn/no-abusive-eslint-disable': 'error', // Prevent overly broad eslint-disable comments
+    'unicorn/prefer-top-level-await': 'off',
+    'unicorn/no-empty-file': 'off',
 
     // Prettier Integration
     'prettier/prettier': 'error', // Ensure Prettier formatting

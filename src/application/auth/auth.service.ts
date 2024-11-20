@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { customErrorCodes } from 'src/common/constants/custom-errorcode';
+import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { UserService } from '../user/user.service';
 import { RegisterDto } from './dto/register.dto';
-import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
-import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 
 @Injectable()
 export class AuthService {

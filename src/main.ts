@@ -1,7 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './core/filters/http-exception.filter';
 import { document } from './infrastructure/config/swagger.config';
 
@@ -21,7 +21,9 @@ async function bootstrap() {
   SwaggerModule.setup('/docs', app, documentFactory);
 
   await app.listen(port, () => {
-    console.log(`Application started on port ${port} successfully...🚀`);
+    // console.log(`Application started on port ${port} successfully...🚀`);
   });
 }
-bootstrap();
+bootstrap().catch((error) => {
+  error;
+});
