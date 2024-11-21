@@ -3,12 +3,13 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './core/filters/http-exception.filter';
+import { envConfig } from './infrastructure/config/env.config';
 import { document } from './infrastructure/config/swagger.config';
 
 const logger = new Logger();
 async function bootstrap() {
-  const port = process.env.PORT || 3001;
-  const defaultVersion = process.env.DEFAULT_API_VERSION || '1';
+  const port = envConfig.PORT;
+  const defaultVersion = envConfig.DEFAULT_API_VERSION;
 
   const app = await NestFactory.create(AppModule);
   app.enableVersioning({

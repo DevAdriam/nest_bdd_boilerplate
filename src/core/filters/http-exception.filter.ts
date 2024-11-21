@@ -8,6 +8,7 @@ import {
 import { Request, Response } from 'express';
 import { GlobalException } from 'src/common/types/type';
 import { extractFeatureFromPath } from 'src/common/utils/extract-feature-from-path';
+import { envConfig } from 'src/infrastructure/config/env.config';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -24,7 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       _metaData: {
         path: request.url,
         feature: extractFeatureFromPath(request.path), // api/v1/auth -> auth
-        version: process.env.API_VERSION,
+        version: envConfig.API_VERSION,
         timeStamp: new Date().toISOString(),
         statusCode: HttpStatus.BAD_REQUEST,
       },
