@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
+import { HashService } from 'src/common/service/hash.service';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { UserEntity } from '../../domain/user/user.entity';
 import { UserRepository } from '../../domain/user/user.repository';
@@ -8,7 +9,10 @@ import { RegisterDto } from '../auth/dto/register.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly hashService: HashService,
+  ) {}
   async suspendUser(userId: string): Promise<User> {
     const userExist = await this.userRepository.findById(userId);
     if (!userExist) {
@@ -48,6 +52,9 @@ export class UserService {
       status: 'REGISTERED',
     });
 
+    const hashPassword = await this.hashPassword(dto.password);
+    userEntity.updatePassword(hashPassword);
+
     const emailValid = userEntity.isValidEmail();
     if (!emailValid) {
       throw new BadRequestException({
@@ -55,12 +62,19 @@ export class UserService {
         code: customErrorCodes.INVALID_JSON,
       });
     }
-    userEntity.hashPassword();
 
     const savedUser = await this.userRepository.create(
       userEntity.toPersistance(),
     );
 
     return savedUser;
+  }
+
+  async hashPassword(password: string) {
+    return await this.hashService.hash(password);
+  }
+
+  async verifyPassword(password: string, hashedPassword: string) {
+    return await this.hashService.compare(password, hashedPassword);
   }
 }

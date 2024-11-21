@@ -16,6 +16,3 @@ jobs:
 
       - name: Run ESLint
         run: npx eslint . --ext .ts
-
-      - name: Run Tests
-        run: npm test

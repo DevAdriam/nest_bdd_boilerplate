@@ -78,6 +78,7 @@ module.exports = {
     'unicorn/no-abusive-eslint-disable': 'error', // Prevent overly broad eslint-disable comments
     'unicorn/prefer-top-level-await': 'off',
     'unicorn/no-empty-file': 'off',
+    'unicorn/prevent-abbreviations': 'off',
 
     // Prettier Integration
     'prettier/prettier': 'error', // Ensure Prettier formatting

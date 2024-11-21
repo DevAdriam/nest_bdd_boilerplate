@@ -1,10 +1,11 @@
-import { VersioningType } from '@nestjs/common';
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './core/filters/http-exception.filter';
 import { document } from './infrastructure/config/swagger.config';
 
+const logger = new Logger();
 async function bootstrap() {
   const port = process.env.PORT || 3001;
   const defaultVersion = process.env.DEFAULT_API_VERSION || '1';
@@ -21,7 +22,7 @@ async function bootstrap() {
   SwaggerModule.setup('/docs', app, documentFactory);
 
   await app.listen(port, () => {
-    // console.log(`Application started on port ${port} successfully...🚀`);
+    logger.log(`Application is running on port ${port}`);
   });
 }
 bootstrap().catch((error) => {

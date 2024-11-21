@@ -1,6 +1,8 @@
+import { Injectable } from '@nestjs/common';
 import type { Prisma, USER_STATUS } from '@prisma/client';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 
+@Injectable()
 export class UserEntity {
   private phone: string | undefined | null;
   private email: string | undefined | null;
@@ -50,10 +52,6 @@ export class UserEntity {
       });
     }
     this.password = newPassword;
-  }
-
-  hashPassword() {
-    this.password = 'hashed';
   }
 
   suspend(): void {
