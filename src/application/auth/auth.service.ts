@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { UnauthorizedException } from 'src/core/exceptions/http/unauthorized.exception';
 import { UserRepository } from 'src/domain/user/user.repository';
+import { Env } from 'src/infrastructure/config/env.config';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly configService: ConfigService<Env>;
   constructor(
     private readonly userService: UserService,
     private readonly userRepository: UserRepository,
@@ -64,8 +67,8 @@ export class AuthService {
 
   private async generateToken(payload: Record<string, unknown>) {
     return await this.jwtService.signAsync(payload, {
-      secret: '',
-      expiresIn: '1d',
+      secret: this.configService.get<string>('JWT_SECRET_KEY'),
+      expiresIn: this.configService.get<string>('TOKEN_EXPIRATION_TIME'),
     });
   }
 }

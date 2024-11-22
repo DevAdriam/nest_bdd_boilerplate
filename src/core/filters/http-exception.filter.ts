@@ -4,14 +4,17 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Injectable,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { GlobalException } from 'src/common/types/type';
 import { extractFeatureFromPath } from 'src/common/utils/extract-feature-from-path';
-import { envConfig } from 'src/infrastructure/config/env.config';
 
 @Catch(HttpException)
+@Injectable()
 export class HttpExceptionFilter implements ExceptionFilter {
+  private configService: ConfigService;
   catch(exception: HttpException, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const request = context.getRequest<Request>();
@@ -25,7 +28,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       _metaData: {
         path: request.url,
         feature: extractFeatureFromPath(request.path), // api/v1/auth -> auth
-        version: envConfig.API_VERSION,
+        version: this.configService.get<string>('API_VERSION'),
         timeStamp: new Date().toISOString(),
         statusCode: HttpStatus.BAD_REQUEST,
       },

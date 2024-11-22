@@ -1,19 +1,16 @@
-const PORT = Number((process.env.PORT as string) || '3000');
-const NODE_ENV: string = process.env.NODE_ENV || 'development';
-const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || '';
-const TOKEN_EXPIRATION_TIME: string = process.env.TOKEN_EXPIRE_TIME || '1d';
-const HASH_ROUND = Number(process.env.HASH_ROUND || '10');
-const DATABASE_URL: string = process.env.DATABASE_URL as string;
-const API_VERSION: string = process.env.API_VERSION || 'v1';
-const DEFAULT_API_VERSION: string = process.env.DEFAULT_API_VERSION || '1';
+import { z } from 'zod';
 
-export const envConfig = {
-  PORT,
-  NODE_ENV,
-  JWT_SECRET_KEY,
-  TOKEN_EXPIRATION_TIME,
-  HASH_ROUND,
-  DATABASE_URL,
-  API_VERSION,
-  DEFAULT_API_VERSION,
-};
+export const envSchema = z.object({
+  PORT: z.string().default('3000').transform(Number),
+  NODE_ENV: z.string().default('development'),
+  JWT_SECRET_KEY: z.string().min(1, 'JWT_SECRET_KEY is required'),
+  TOKEN_EXPIRATION_TIME: z.string().default('1d'),
+  HASH_ROUND: z.string().default('10').transform(Number),
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
+  API_VERSION: z.string().default('v1'),
+  DEFAULT_API_VERSION: z.string().default('1'),
+  GMAIL_USER: z.string().nullable().optional(),
+  GMAIL_PASS: z.string().nullable().optional(),
+});
+
+export type Env = z.infer<typeof envSchema>;
