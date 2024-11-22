@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 import { HashService } from 'src/common/service/hash.service';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { UserEntity } from '../../domain/user/user.entity';
@@ -54,14 +53,6 @@ export class UserService {
 
     const hashPassword = await this.hashPassword(dto.password);
     userEntity.updatePassword(hashPassword);
-
-    const emailValid = userEntity.isValidEmail();
-    if (!emailValid) {
-      throw new BadRequestException({
-        message: 'email is not valid',
-        code: customErrorCodes.INVALID_JSON,
-      });
-    }
 
     const savedUser = await this.userRepository.create(
       userEntity.toPersistance(),

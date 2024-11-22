@@ -19,5 +19,6 @@ import { PresentationModule } from './presentation/presentation.module';
     PrismaModule,
   ],
   controllers: [AppController],
+  providers: [],
 })
 export class AppModule {}

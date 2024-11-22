@@ -7,10 +7,12 @@ export class RegisterDto {
   name: string;
 
   @ApiPropertyOptional()
-  email: string | null;
+  @IsString()
+  email?: string;
 
   @ApiPropertyOptional()
-  phone: string | null;
+  @IsString()
+  phone?: string;
 
   @ApiProperty()
   @IsString()

@@ -12,16 +12,14 @@ import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
-  private readonly configService: ConfigService<Env>;
   constructor(
     private readonly userService: UserService,
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService<Env>,
   ) {}
 
   async register(dto: RegisterDto) {
-    const hashPassword = dto.password;
-
     if (!dto.email && !dto.phone) {
       throw new BadRequestException({
         message: 'user must have phone or password',
@@ -37,7 +35,6 @@ export class AuthService {
 
     const registerUser = await this.userService.registerUser({
       ...dto,
-      password: hashPassword,
     });
     return registerUser;
   }

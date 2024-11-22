@@ -14,7 +14,7 @@ import { extractFeatureFromPath } from 'src/common/utils/extract-feature-from-pa
 @Catch(HttpException)
 @Injectable()
 export class HttpExceptionFilter implements ExceptionFilter {
-  private configService: ConfigService;
+  constructor(private readonly configService: ConfigService) {}
   catch(exception: HttpException, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const request = context.getRequest<Request>();
