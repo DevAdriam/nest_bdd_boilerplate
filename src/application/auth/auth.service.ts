@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { UnauthorizedException } from 'src/core/exceptions/http/unauthorized.exception';
+import { UserEntity } from 'src/domain/user/user.entity';
 import { UserRepository } from 'src/domain/user/user.repository';
 import { Env } from 'src/infrastructure/config/env.config';
 import { UserService } from '../user/user.service';
@@ -58,14 +59,44 @@ export class AuthService {
       });
     }
 
+    const userEntity = new UserEntity(userExist);
+    userEntity.active();
+
+    if (!userEntity.getId()) {
+      throw new BadRequestException({
+        message: 'something went wrong',
+      });
+    }
+
+    const updatedUser = await this.userRepository.updateStatus(
+      userEntity.getStatus()!,
+      userEntity.getId()!,
+    );
+
+    if (!updatedUser) {
+      throw new BadRequestException({
+        message: 'Failed to update user',
+      });
+    }
+
     const accessToken = await this.generateToken({ id: userExist.id });
     return accessToken;
+  }
+
+  async fetchProfile(id: string) {
+    return this.userRepository.findById(id);
   }
 
   private async generateToken(payload: Record<string, unknown>) {
     return await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('JWT_SECRET_KEY'),
       expiresIn: this.configService.get<string>('TOKEN_EXPIRATION_TIME'),
+    });
+  }
+
+  verifyToken(token: string): Promise<Record<string, unknown>> {
+    return this.jwtService.verify(token, {
+      secret: this.configService.get<string>('JWT_SECRET_KEY'),
     });
   }
 }

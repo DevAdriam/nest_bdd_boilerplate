@@ -10,10 +10,10 @@ export class MailService {
   private transporter: nodemailer.Transporter;
   private readonly gmailUser: string;
   private readonly gmailPassword: string;
-  private readonly logger = new Logger('Mail Service');
+  private readonly logger = new Logger(MailService.name);
 
   constructor(private readonly configService: ConfigService<Env>) {
-    this.logger.debug('mail service init');
+    this.logger.log('mail service initialized');
     this.gmailUser = this.configService.get<string>('GMAIL_USER')!;
     this.gmailPassword = this.configService.get<string>('GMAIL_PASS')!;
     this.transporter = nodemailer.createTransport({

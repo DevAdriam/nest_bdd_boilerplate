@@ -9,15 +9,18 @@ export class UserEntity {
   private name: string;
   private status: USER_STATUS;
   private password: string;
+  private id: string | null | undefined;
 
   constructor({
     email,
     phone,
     name,
     status,
+    id,
   }: {
     email?: string | undefined | null;
     phone?: string | undefined | null;
+    id?: string | null | undefined;
     name: string;
     status: USER_STATUS;
   }) {
@@ -25,10 +28,15 @@ export class UserEntity {
     this.phone = phone;
     this.name = name;
     this.status = status;
+    this.id = id;
   }
 
   getPhone(): string | null | undefined {
     return this.phone;
+  }
+
+  getId(): string | null | undefined {
+    return this.id;
   }
 
   getName(): string {
@@ -56,6 +64,10 @@ export class UserEntity {
 
   suspend(): void {
     this.status = 'SUSPENDED';
+  }
+
+  active(): void {
+    this.status = 'ACTIVE';
   }
 
   toPersistance(): Prisma.UserCreateInput {

@@ -10,11 +10,9 @@ import { PresentationModule } from './presentation/presentation.module';
 @Module({
   imports: [
     ConfigModule,
-    JwtModule.register({
-      secret: '',
-    }),
     MailModule,
     PassportModule,
+    JwtModule,
     PresentationModule,
     PrismaModule,
   ],

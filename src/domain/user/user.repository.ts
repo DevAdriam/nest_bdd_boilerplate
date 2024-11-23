@@ -15,7 +15,7 @@ export class UserRepository implements UserRepositoryInterface {
 
   async findByEmail(email: string): Promise<User | null> {
     return await this.databaseService.user.findFirst({
-      where: { email, status: 'ACTIVE' },
+      where: { email },
     });
   }
 

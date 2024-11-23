@@ -1,10 +1,20 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthService } from 'src/application/auth/auth.service';
 import { LoginDto } from 'src/application/auth/dto/login.dto';
 import { RegisterDto } from 'src/application/auth/dto/register.dto';
-import { Responser } from 'src/common/types/type';
+import { User } from 'src/common/decorators/user.decorator';
+import { IAuthUser, Responser } from 'src/common/types/type';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
+import { JWTAuthGuard } from 'src/infrastructure/auth/guard/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -53,7 +63,9 @@ export class AuthController {
           message: 'Success',
         },
         _data: {
-          data: tokens,
+          data: {
+            accessToken: tokens,
+          },
         },
       };
     } catch (error) {
@@ -65,6 +77,29 @@ export class AuthController {
 
       throw new BadRequestException({
         message: 'failed to register',
+      });
+    }
+  }
+
+  @Get('me')
+  @ApiBearerAuth()
+  @UseGuards(JWTAuthGuard)
+  async fetchProfile(@User() user: IAuthUser): Promise<Responser> {
+    try {
+      const me = await this.authService.fetchProfile(user.id);
+      return {
+        success: true,
+        _metaData: {
+          statusCode: HttpStatus.OK,
+          message: 'Succcessfully fetched profile',
+        },
+        _data: {
+          data: me,
+        },
+      };
+    } catch {
+      throw new BadRequestException({
+        message: 'failed to fetch profile',
       });
     }
   }

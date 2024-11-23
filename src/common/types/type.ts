@@ -29,3 +29,7 @@ export type GlobalException = {
 export type JWTPayload = {
   id: string;
 };
+
+export interface IAuthUser {
+  id: string;
+}

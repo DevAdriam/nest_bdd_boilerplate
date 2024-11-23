@@ -20,7 +20,7 @@ async function bootstrap() {
     defaultVersion,
   });
   app.setGlobalPrefix('api');
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(configService));
   app.enableCors();
   const documentFactory = () => SwaggerModule.createDocument(app, document);
   SwaggerModule.setup('/docs', app, documentFactory);
