@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 import { Env } from '../config/env.config';
-import { verifyEmail } from './templates/verify';
+import { verifyEmail } from './templates/otp-verify';
 
 @Injectable()
 export class MailService {

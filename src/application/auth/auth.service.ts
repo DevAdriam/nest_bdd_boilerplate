@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
+import { NotFoundException } from 'src/core/exceptions/http/not-found.exception';
 import { UnauthorizedException } from 'src/core/exceptions/http/unauthorized.exception';
 import { UserEntity } from 'src/domain/user/user.entity';
 import { UserRepository } from 'src/domain/user/user.repository';
@@ -43,7 +44,7 @@ export class AuthService {
   async login(dto: LoginDto) {
     const userExist = await this.userRepository.findByEmail(dto.email);
     if (!userExist) {
-      throw new UnauthorizedException({
+      throw new NotFoundException({
         message: 'user not found',
       });
     }
