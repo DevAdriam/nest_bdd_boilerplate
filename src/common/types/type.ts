@@ -33,3 +33,8 @@ export type JWTPayload = {
 export interface IAuthUser {
   id: string;
 }
+
+export type PaginationParam = {
+  take: number;
+  skip: number;
+};

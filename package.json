@@ -21,6 +21,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@commitlint/types": "^19.5.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
