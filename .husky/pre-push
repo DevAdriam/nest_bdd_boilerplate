@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running NestJS startup check..."
+
+# Run your application in validation mode and capture all output
+pnpm run start > startup.log 2>&1 || true
+
+# Check for the application startup or errors in the log
+if grep -Fq "Nest application successfully started" startup.log; then
+  echo "✅ Application started successfully."
+  exit 0
+else
+  echo "❌ Dependency resolution failed! Check startup.log for details."
+  exit 1
+fi
