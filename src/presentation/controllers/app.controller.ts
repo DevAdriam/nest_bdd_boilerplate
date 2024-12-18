@@ -1,25 +1,11 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  HttpStatus,
-} from '@nestjs/common';
+import { BadRequestException, Controller, Get } from '@nestjs/common';
 import { customErrorCodes } from 'src/common/constants/custom-errorcode';
-import { Responser } from 'src/common/types/type';
 
 @Controller()
 export class AppController {
   @Get()
-  getHello(): Responser {
-    return {
-      _data: {
-        data: 'hello',
-      },
-      _metaData: {
-        message: 'Success',
-        statusCode: HttpStatus.OK,
-      },
-    };
+  getHello(): string {
+    return 'hello';
   }
 
   @Get('test-throw')

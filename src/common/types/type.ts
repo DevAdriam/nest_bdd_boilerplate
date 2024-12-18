@@ -9,12 +9,28 @@ export type Metadata = {
   statusCode: HttpStatus;
 };
 
-export type Responser = {
+export interface IResponse {
   success?: boolean;
   _metaData: Metadata;
   _data: {
     data: unknown;
   };
+}
+
+export interface IPaginatedResponse extends IResponse {
+  _pagination: {
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
+  };
+  _data: {
+    data: unknown;
+  };
+}
+
+export type IPaginate<T> = {
+  list: Array<T>;
+  totalCount: number;
 };
 
 export type GlobalException = {
@@ -38,3 +54,31 @@ export type PaginationParam = {
   take: number;
   skip: number;
 };
+
+export interface IProductEntity {
+  categoryId: string;
+  name: string;
+  description: string | null;
+  code: string;
+  stocks: number;
+  lowStocks: number;
+}
+
+export interface IProductDetail {
+  productId: string;
+}
+
+export interface IProductImage {
+  colorId: string;
+  image: any;
+}
+
+export interface IProductInformation {
+  productDetailId: string;
+  sizeId: string;
+  sizeDescription?: string | null;
+  stocks: number;
+  purchasePrice: number;
+  sellingPrice: number;
+  colorIds: string[];
+}

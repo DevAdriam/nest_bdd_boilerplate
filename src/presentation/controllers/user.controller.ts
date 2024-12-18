@@ -1,7 +1,7 @@
 import { Controller, HttpCode, Param, Patch } from '@nestjs/common';
 import { ApiParam } from '@nestjs/swagger';
+import { User } from '@prisma/client';
 import { UserService } from 'src/application/user/user.service';
-import { Responser } from 'src/common/types/type';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
 
 @Controller('user')
@@ -13,18 +13,10 @@ export class UserController {
     example: 'bf93110b-7ce2-4b4b-9643-54555336d04b',
   })
   @HttpCode(201)
-  async suspendUser(@Param('id') userId: string): Promise<Responser> {
+  async suspendUser(@Param('id') userId: string): Promise<User> {
     try {
       const suspendedUser = await this.userService.suspendUser(userId);
-      return {
-        _metaData: {
-          message: 'Successfully suspended User',
-          statusCode: 201,
-        },
-        _data: {
-          data: suspendedUser,
-        },
-      };
+      return suspendedUser;
     } catch (error) {
       if (error instanceof Error) {
         throw new BadRequestException({

@@ -11,6 +11,8 @@ export const envSchema = z.object({
   DEFAULT_API_VERSION: z.string().default('1'),
   GMAIL_USER: z.string().nullable().optional(),
   GMAIL_PASS: z.string().nullable().optional(),
+  GOOGLE_CLIENT_ID: z.string().nullable().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().nullable().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
