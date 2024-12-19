@@ -4,16 +4,19 @@ import {
   Get,
   HttpCode,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { User } from '@prisma/client';
+import { Request } from 'express';
 import { AuthService } from 'src/application/auth/auth.service';
 import { LoginDto } from 'src/application/auth/dto/login.dto';
 import { RegisterDto } from 'src/application/auth/dto/register.dto';
 import { User as ValidateUser } from 'src/common/decorators/user.decorator';
 import { IAuthUser } from 'src/common/types/type';
 import { BadRequestException } from 'src/core/exceptions/http/bad-request.exception';
+import { GoogleAuthGuard } from 'src/infrastructure/auth/guard/google.guard';
 import { JWTAuthGuard } from 'src/infrastructure/auth/guard/jwt.guard';
 
 @Controller('auth')
@@ -75,5 +78,17 @@ export class AuthController {
         message: 'failed to fetch profile',
       });
     }
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  loginWithGoogle() {
+    return 'hehe';
+  }
+
+  @Get('google/redirect')
+  @UseGuards(GoogleAuthGuard)
+  googleAuthRedirect(@Req() req: Request) {
+    return req.user;
   }
 }

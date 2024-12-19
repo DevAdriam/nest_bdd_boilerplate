@@ -13,6 +13,7 @@ export const envSchema = z.object({
   GMAIL_PASS: z.string().nullable().optional(),
   GOOGLE_CLIENT_ID: z.string().nullable().optional(),
   GOOGLE_CLIENT_SECRET: z.string().nullable().optional(),
+  GOOGLE_CALLBACK_URL: z.string().nullable().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -70,7 +70,7 @@ export interface IProductDetail {
 
 export interface IProductImage {
   colorId: string;
-  image: any;
+  image: unknown;
 }
 
 export interface IProductInformation {
@@ -81,4 +81,11 @@ export interface IProductInformation {
   purchasePrice: number;
   sellingPrice: number;
   colorIds: string[];
+}
+
+export interface IGoogleProfile {
+  id: string;
+  displayName: string;
+  emails: { value: string }[];
+  photos: { value: string }[];
 }

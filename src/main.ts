@@ -23,7 +23,9 @@ async function bootstrap() {
   });
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter(configService));
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+  });
   const documentFactory = () => SwaggerModule.createDocument(app, document);
   SwaggerModule.setup('/docs', app, documentFactory);
 
